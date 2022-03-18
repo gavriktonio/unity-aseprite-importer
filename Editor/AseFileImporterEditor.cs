@@ -45,6 +45,15 @@ namespace AsepriteImporter {
         {
             serializedObject.Update();
 
+            var skipImportProperty = serializedObject.FindProperty("settings." + "SkipImport");
+            bool skipImport = skipImportProperty.boolValue;
+            skipImport = EditorGUILayout.Toggle("Skip Import", skipImport);
+            skipImportProperty.boolValue = skipImport;
+            if (skipImport)
+            {
+                ApplyRevertGUI();
+                return;
+            }
 
             string[] importers = importer.ImporterNames;
             int index = importer.selectedImporter;

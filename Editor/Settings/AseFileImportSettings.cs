@@ -37,7 +37,10 @@ namespace AsepriteImporter {
     }
 
     [Serializable]
-    public class AseFileImportSettings {
+    public class AseFileImportSettings
+    {
+        public bool SkipImport = false;
+        
         [SerializeField] public AseFileImportType importType = AseFileImportType.Sprite;
         [SerializeField] public TransparencyMode transparencyMode = TransparencyMode.Default;
         [SerializeField] public Color transparentColor = Color.magenta;

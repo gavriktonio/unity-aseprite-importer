@@ -68,6 +68,10 @@ namespace AsepriteImporter
 
             AsepriteFile = file;
             AssetPath = ctx.assetPath;
+            
+            if (Settings.SkipImport)
+                return;
+            
             OnImport();
             
             updates = UPDATE_LIMIT;
