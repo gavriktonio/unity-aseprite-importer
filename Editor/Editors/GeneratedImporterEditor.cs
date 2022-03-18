@@ -112,6 +112,9 @@ namespace AsepriteImporter.Editors
                     EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "tileEmpty"),
                         new GUIContent("Empty Slice Behaviour",
                             "Behavior for empty slices:\nKeep - Keep empty slices\nIndex - Remove empty slices, but still index them\nRemove - Remove empty slices completely"));
+
+                    EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "SeparateLayers"),
+                        new GUIContent("SeparateLayers"));
                     
                     EditorGUI.indentLevel--;
                 }

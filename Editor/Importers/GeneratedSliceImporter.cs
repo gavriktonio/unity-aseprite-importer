@@ -14,7 +14,10 @@ namespace AsepriteImporter {
         private string fileName;
         private string filePath;
         private int updateLimit;
-        private Texture2D atlas;
+        
+        private Texture2D mainImage;
+        private Dictionary<string, Texture2D> separatedImages = new Dictionary<string, Texture2D>();
+
 
         public GeneratedSliceImporter(AseFileImporter importer) : base(importer)
         {
@@ -32,22 +35,53 @@ namespace AsepriteImporter {
             
             size = new Vector2Int(AsepriteFile.Header.Width, AsepriteFile.Header.Height);
 
-            Texture2D frame = AsepriteFile.GetFrames()[0];
-
-            atlas = frame;
+            if (Settings.SeparateLayers.Length == 0)
+            {
+                Texture2D frame = AsepriteFile.GetFrames()[0];
+                mainImage = frame;
+            }
+            else
+            {
+                Texture2D frame = AsepriteFile.GetFrames(Settings.SeparateLayers)[0];
+                mainImage = frame;
+                foreach (var separateLayerName in Settings.SeparateLayers)
+                {
+                    separatedImages.Add(separateLayerName, AsepriteFile.GetFrames(null, new []{separateLayerName})[0]);
+                }
+            }
                 
             try {
-                File.WriteAllBytes(filePath, frame.EncodeToPNG());
+                File.WriteAllBytes(filePath, mainImage.EncodeToPNG());
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             } catch (Exception e) {
                 Debug.LogError(e.Message);
             }
+
+            foreach (var separatedImage in separatedImages)
+            {
+                try {
+                    File.WriteAllBytes(directoryName + "/" + fileName + '_' + separatedImage.Key +".png", separatedImage.Value.EncodeToPNG());
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                } catch (Exception e) {
+                    Debug.LogError(e.Message);
+                }
+            }
         }
 
         protected override bool OnUpdate()
         {
-            return GenerateSprites(filePath, size);
+            bool success = GenerateSprites(filePath, mainImage);
+            if (success)
+                foreach (var separatedImage in separatedImages)
+                {
+                    string filePathWithoutExtension = filePath.Replace(Path.GetExtension(filePath), "");
+                    string separatedFilePath = filePathWithoutExtension + "_" + separatedImage.Key + Path.GetExtension(filePath);
+                    if (!GenerateSprites(separatedFilePath, separatedImage.Value, "_" + separatedImage.Key))
+                        return false;
+                }
+            return success;
         }
 
         private Color[] GetPixels(Texture2D sprite, RectInt from)
@@ -81,8 +115,7 @@ namespace AsepriteImporter {
             return color;
         }
 
-        private bool GenerateSprites(string path, Vector2Int size) {
-            this.size = size;
+        private bool GenerateSprites(string path, Texture2D texture, string separatedString = null) {
 
             var fileName = Path.GetFileNameWithoutExtension(path);
             TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -96,7 +129,7 @@ namespace AsepriteImporter {
             importer.spritePixelsPerUnit = Settings.pixelsPerUnit;
             importer.mipmapEnabled = false;
             importer.filterMode = FilterMode.Point;
-            var metaList = CreateMetaData(fileName);
+            var metaList = CreateMetaData(fileName, texture, separatedString);
             var oldProperties = AseSpritePostProcess.GetPhysicsShapeProperties(importer, metaList);
 
             importer.spritesheet = metaList.ToArray();
@@ -121,7 +154,7 @@ namespace AsepriteImporter {
             return true;
         }
 
-        private List<SpriteMetaData> CreateMetaData(string fileName) {
+        private List<SpriteMetaData> CreateMetaData(string fileName, Texture2D texture, string separatedString = null) {
             var res = new List<SpriteMetaData>();
             
             var sliceChunks = AsepriteFile.GetChunks<SliceChunk>();
@@ -129,12 +162,19 @@ namespace AsepriteImporter {
             {
                 RectInt rect = sliceChunk.SliceKeys[0].GetSliceKeyRect();
                 rect.y = size.y - rect.y - rect.height;
-                if (Settings.tileEmpty == EmptyTileBehaviour.Remove && IsTileEmpty(rect, atlas)) 
+                if (Settings.tileEmpty == EmptyTileBehaviour.Remove && IsTileEmpty(rect, texture)) 
                 {
                     continue;
                 }
                 var meta = new SpriteMetaData();
-                meta.name = fileName + "_" + sliceChunk.Name;
+                string name = fileName + "_" + sliceChunk.Name;
+                if (separatedString != null)
+                {
+                    name = name.Replace(separatedString, "");
+                    name += separatedString;
+                }
+
+                meta.name = name;
                 meta.rect = new Rect(rect.min, rect.size);
                 meta.alignment = Settings.spriteAlignment;
                 meta.pivot = Settings.spritePivot;
