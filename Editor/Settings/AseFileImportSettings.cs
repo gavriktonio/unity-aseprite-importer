@@ -40,7 +40,7 @@ namespace AsepriteImporter {
         [SerializeField] public AseFileImportType importType = AseFileImportType.Sprite;
         [SerializeField] public TransparencyMode transparencyMode = TransparencyMode.Default;
         [SerializeField] public Color transparentColor = Color.magenta;
-        [SerializeField] public int pixelsPerUnit = 16;
+        [SerializeField] public float pixelsPerUnit = 16;
         [SerializeField] public int spriteAlignment = 0;
         [SerializeField] public Vector2 spritePivot = new Vector2(0.5f, 0.5f);
 

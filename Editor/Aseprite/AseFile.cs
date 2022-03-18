@@ -284,7 +284,7 @@ namespace Aseprite
             return animations.ToArray();
         }
 
-        public MetaData[] GetMetaData(Vector2 spritePivot, int pixelsPerUnit)
+        public MetaData[] GetMetaData(Vector2 spritePivot, float pixelsPerUnit)
         {
             Dictionary<int, MetaData> metadatas = new Dictionary<int, MetaData>();
 
