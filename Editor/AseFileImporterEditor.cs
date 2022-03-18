@@ -21,7 +21,7 @@ namespace AsepriteImporter {
 
         private int importType;
         
-        protected readonly string[] importTypes = {"Sprite", "Tileset (Grid)"};
+        protected readonly string[] importTypes = {"Sprite", "Tileset (Grid)", "Slices"};
 
         internal AseFileImportType ImportType => (AseFileImportType)importType;
 
@@ -79,8 +79,6 @@ namespace AsepriteImporter {
             serializedObject.ApplyModifiedProperties();
             ApplyRevertGUI();
         }
-
-        
 
         internal void CallApplyAndImport()
         {

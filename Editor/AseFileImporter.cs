@@ -63,6 +63,8 @@ namespace AsepriteImporter {
                         return SelectedImporter.SpriteImporter;
                     case AseFileImportType.Tileset:
                         return SelectedImporter.TileSetImporter;
+                    case AseFileImportType.Slice:
+                        return SelectedImporter.SliceImporter;
                 }
 
                 return SelectedImporter.SpriteImporter;
@@ -83,8 +85,8 @@ namespace AsepriteImporter {
 
         public AseFileImporter()
         {
-            var generatedImporter = new ImporterVariant("Generated (Subfolders)", new GeneratedSpriteImporter(this), new GeneratedTileImporter(this), new GeneratedImporterEditor());
-            var bundledImporter = new ImporterVariant("Bundled (preview)", new BundledSpriteImporter(this), new GeneratedTileImporter(this), new BundledImporterEditor());
+            var generatedImporter = new ImporterVariant("Generated (Subfolders)", new GeneratedSpriteImporter(this), new GeneratedTileImporter(this), new GeneratedSliceImporter(this), new GeneratedImporterEditor());
+            var bundledImporter = new ImporterVariant("Bundled (preview)", new BundledSpriteImporter(this), new GeneratedTileImporter(this), new GeneratedSliceImporter(this), new BundledImporterEditor());
             
             importerVariants.Add(generatedImporter);
             importerVariants.Add(bundledImporter);

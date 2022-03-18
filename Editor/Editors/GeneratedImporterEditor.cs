@@ -102,6 +102,20 @@ namespace AsepriteImporter.Editors
                     EditorGUI.indentLevel--;
                 }
             }
+            
+            if (ImportType == AseFileImportType.Slice)
+            {
+                EditorGUILayout.LabelField("Slice Options", EditorStyles.boldLabel);
+                {
+                    EditorGUI.indentLevel++;
+                    PivotPopup("Slice Pivot");
+                    EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "tileEmpty"),
+                        new GUIContent("Empty Slice Behaviour",
+                            "Behavior for empty slices:\nKeep - Keep empty slices\nIndex - Remove empty slices, but still index them\nRemove - Remove empty slices completely"));
+                    
+                    EditorGUI.indentLevel--;
+                }
+            }
         }
         
         private void PivotPopup(string label) {

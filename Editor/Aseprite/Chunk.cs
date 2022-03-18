@@ -14,7 +14,8 @@ namespace Aseprite
         Path = 0x2017 , // NEVER USED
         FrameTags = 0x2018,
         Palette = 0x2019,
-        UserData = 0x2020
+        UserData = 0x2020,
+        Slice = 0x2022
     }
 
     public class Chunk
@@ -48,6 +49,8 @@ namespace Aseprite
                     return new FrameTagsChunk(length, reader) { Frame = frame };
                 case ChunkType.Palette:
                     return new PaletteChunk(length, reader) { Frame = frame };
+                case ChunkType.Slice:
+                    return new SliceChunk(length, reader) { Frame = frame };
             }
 
             reader.BaseStream.Position += length - Chunk.HEADER_SIZE;

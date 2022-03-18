@@ -7,6 +7,7 @@ namespace AsepriteImporter {
     public enum AseFileImportType {
         Sprite,
         Tileset,
+        Slice
     }
 
     public enum TileNameType {
