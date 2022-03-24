@@ -16,7 +16,7 @@ namespace AsepriteImporter {
         private int updateLimit;
         
         private Texture2D mainImage;
-        private Dictionary<string, Texture2D> separatedImages = new Dictionary<string, Texture2D>();
+        protected Dictionary<string, Texture2D> separatedImages = new Dictionary<string, Texture2D>();
 
 
         public GeneratedSliceImporter(AseFileImporter importer) : base(importer)
@@ -202,7 +202,10 @@ namespace AsepriteImporter {
             return serializedImporter.FindProperty("m_SpriteSheet.m_PhysicsShape");
         }
 
-        private bool IsTileEmpty(RectInt tileRect, Texture2D atlas) {
+        private bool IsTileEmpty(RectInt tileRect, Texture2D atlas)
+        {
+            if (atlas == null)
+                return true;
             Color[] tilePixels = GetPixels(atlas, tileRect);
             for (int i = 0; i < tilePixels.Length; i++) {
                 if (tilePixels[i].a != 0) {

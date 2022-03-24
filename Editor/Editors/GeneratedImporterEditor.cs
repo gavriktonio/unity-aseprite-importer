@@ -64,6 +64,9 @@ namespace AsepriteImporter.Editors
                 {
                     EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "baseAnimator"));
                 }
+                
+                EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "SeparateLayers"),
+                    new GUIContent("SeparateLayers"));
 
                 EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "buildAtlas"));
 
@@ -88,6 +91,9 @@ namespace AsepriteImporter.Editors
                         new GUIContent("Empty Tile Behaviour",
                             "Behavior for empty tiles:\nKeep - Keep empty tiles\nIndex - Remove empty tiles, but still index them\nRemove - Remove empty tiles completely"));
 
+                    EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "SeparateLayers"),
+                        new GUIContent("SeparateLayers"));
+                    
                     // tileNameType
                     var tileNameTypeProperty = SerializedObject.FindProperty(settings + "tileNameType");
                     var tileNameType = (TileNameType) tileNameTypeProperty.enumValueIndex;
