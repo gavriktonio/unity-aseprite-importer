@@ -104,8 +104,12 @@ namespace Aseprite.Utils
                     Color c = new Color();
                     b.a = b.a * opacity;
 
-                    c = ((1f - b.a) * a) + (b.a * b);
+                    //c = ((1f - b.a) * a) + (b.a * b);
                     c.a = a.a + b.a * (1f - a.a);
+                    
+                    c.r = ((b.r * b.a) + (a.r * a.a * (1f - b.a))) / c.a;
+                    c.g = ((b.g * b.a) + (a.g * a.a * (1f - b.a))) / c.a;
+                    c.b = ((b.b * b.a) + (a.b * a.a * (1f - b.a))) / c.a;
 
                     newLayer.SetPixel(x, y, c);
                 }
