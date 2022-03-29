@@ -177,7 +177,19 @@ namespace AsepriteImporter {
                 meta.name = name;
                 meta.rect = new Rect(rect.min, rect.size);
                 meta.alignment = Settings.spriteAlignment;
-                meta.pivot = Settings.spritePivot;
+
+                if (sliceChunk.HasPivotInfo)
+                {
+                    Vector2Int pivotInfo = new Vector2Int(sliceChunk.SliceKeys[0].PivotXOrigin,
+                        sliceChunk.SliceKeys[0].PivotYOrigin);
+                    Vector2 pivot = new Vector2((float)pivotInfo.x / rect.width, 1f - (float)pivotInfo.y / rect.height);
+                    meta.pivot = pivot;
+                }
+                else
+                {
+                    meta.pivot = Settings.spritePivot;
+                }
+                
                 res.Add(meta);
             }
             
