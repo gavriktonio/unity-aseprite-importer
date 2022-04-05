@@ -17,7 +17,7 @@ namespace AsepriteImporter
 {
     public abstract class SpriteImporter
     {
-        private const int UPDATE_LIMIT = 300;
+        private const int UPDATE_LIMIT = 10;
 
         private int updates;
         private AseFileImporter importer;
