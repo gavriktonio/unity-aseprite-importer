@@ -160,8 +160,7 @@ namespace AsepriteImporter {
             var sliceChunks = AsepriteFile.GetChunks<SliceChunk>();
             foreach (var sliceChunk in sliceChunks)
             {
-                RectInt rect = sliceChunk.SliceKeys[0].GetSliceKeyRect();
-                rect.y = size.y - rect.y - rect.height;
+                RectInt rect = sliceChunk.SliceKeys[0].GetSliceKeyRect(size);
                 if (Settings.tileEmpty == EmptyTileBehaviour.Remove && IsTileEmpty(rect, texture)) 
                 {
                     continue;

@@ -84,18 +84,29 @@ namespace AsepriteImporter
         {
             AssetDatabase.Refresh();
             var done = false;
-            if (OnUpdate()) {
-                done = true;
-            } else {
-                updates--;
-                if (updates <= 0) {
+            try
+            {
+                if (OnUpdate()) {
                     done = true;
+                } else {
+                    updates--;
+                    if (updates <= 0) {
+                        done = true;
+                    }
+                }
+
+                if (done) {
+                    EditorApplication.update -= OnEditorUpdate;
                 }
             }
-
-            if (done) {
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                updates = 0;
                 EditorApplication.update -= OnEditorUpdate;
+                throw;
             }
+            
         }
         
         protected virtual bool OnUpdate()

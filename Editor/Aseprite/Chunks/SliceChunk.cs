@@ -26,11 +26,29 @@ namespace Aseprite.Chunks
         public int PivotXOrigin { get; private set; }
         public int PivotYOrigin { get; private set; }
 
-        public RectInt GetSliceKeyRect()
+        public RectInt GetSliceKeyRect(Vector2Int size)
         {
-            Vector2Int sliceOrigin = new Vector2Int(SliceXOrigin, SliceYOrigin);
             Vector2Int sliceSize = new Vector2Int((int)SliceWidth, (int)SliceHeight);
-            RectInt rect = new RectInt(sliceOrigin, sliceSize);
+            Vector2Int sliceOrigin = new Vector2Int(SliceXOrigin, size.y - SliceYOrigin - sliceSize.y);
+
+            Vector2Int sliceCappedOrigin = new Vector2Int(Mathf.Max(0, sliceOrigin.x), Mathf.Max(0, sliceOrigin.y));
+            Vector2Int offset = sliceCappedOrigin - sliceOrigin;
+            
+            sliceSize -= offset;
+
+            RectInt rect = new RectInt(sliceCappedOrigin, sliceSize);
+            
+            Vector2Int rectMax = rect.max;
+            if (rectMax.x > size.x)
+            {
+                int x = rect.size.x - (rectMax.x - size.x);
+                rect.size -= new Vector2Int(x, 0);
+            }
+            if (rectMax.y > size.y)
+            {
+                int y = rect.size.y - (rectMax.y - size.y);
+                rect.size -= new Vector2Int(0, y);
+            }
             return rect;
         }
 
