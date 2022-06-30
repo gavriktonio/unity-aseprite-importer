@@ -47,6 +47,7 @@ namespace AsepriteImporter {
         [SerializeField] public float pixelsPerUnit = 16;
         [SerializeField] public int spriteAlignment = 0;
         [SerializeField] public Vector2 spritePivot = new Vector2(0.5f, 0.5f);
+        [SerializeField] public int padding = 0;
 
         [SerializeField] public bool generateAnimations = true;
         [SerializeField] public bool createAnimationAssets = false;

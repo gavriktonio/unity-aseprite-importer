@@ -14,7 +14,6 @@ using UnityEngine.UI;
 namespace AsepriteImporter.Importers {
     public class GeneratedSpriteImporter : SpriteImporter
     {
-        private int padding = 1;
         private Vector2Int size;
         private string fileName;
         private string directoryName;
@@ -101,8 +100,8 @@ namespace AsepriteImporter.Importers {
                 rows = Mathf.CeilToInt(sqrt / size.y);
             }
 
-            var width = cols * (size.x + padding * 2);
-            var height = rows * (size.y + padding * 2);
+            var width = cols * (size.x + Settings.padding * 2);
+            var height = rows * (size.y + Settings.padding * 2);
             var atlas = Texture2DUtil.CreateTransparentTexture(width, height);
 
             var index = 0;
@@ -113,8 +112,8 @@ namespace AsepriteImporter.Importers {
                     }
 
                     var sprite = sprites[index];
-                    var rect = new RectInt(col * (size.x + padding * 2) + padding,
-                                           height - (row + 1) * (size.y + padding * 2) + padding,
+                    var rect = new RectInt(col * (size.x + Settings.padding * 2) + Settings.padding,
+                                           height - (row + 1) * (size.y + Settings.padding * 2) + Settings.padding,
                                            size.x,
                                            size.y);
                     CopyColors(sprite, atlas, rect);
@@ -180,14 +179,14 @@ namespace AsepriteImporter.Importers {
         private List<SpriteMetaData> CreateMetaData(string fileNameInput, Texture2D[] frames) {
             var res = new List<SpriteMetaData>();
             var index = 0;
-            var height = rows * (size.y + padding * 2);
+            var height = rows * (size.y + Settings.padding * 2);
             var done = false;
             var count10 = frames.Length >= 100 ? 3 : (frames.Length >= 10 ? 2 : 1);
 
             for (var row = 0; row < rows; row++) {
                 for (var col = 0; col < cols; col++) {
-                    Rect rect = new Rect(col * (size.x + padding * 2) + padding,
-                                         height - (row + 1) * (size.y + padding * 2) + padding,
+                    Rect rect = new Rect(col * (size.x + Settings.padding * 2) + Settings.padding,
+                                         height - (row + 1) * (size.y + Settings.padding * 2) + Settings.padding,
                                          size.x,
                                          size.y);
                     var meta = new SpriteMetaData();

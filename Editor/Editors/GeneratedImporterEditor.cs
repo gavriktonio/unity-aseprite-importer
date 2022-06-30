@@ -69,7 +69,11 @@ namespace AsepriteImporter.Editors
                     new GUIContent("SeparateLayers"));
 
                 EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "buildAtlas"));
-
+                
+                //var paddingProperty = SerializedObject.FindProperty(settings + "padding");
+                //var padding = paddingProperty.intValue;
+                EditorGUILayout.PropertyField(SerializedObject.FindProperty(settings + "padding"));
+                
                 if (EditorGUI.EndChangeCheck())
                 {
                     bindTypeProperty.intValue = (int) bindType;
