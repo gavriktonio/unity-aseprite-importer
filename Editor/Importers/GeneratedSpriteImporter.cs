@@ -100,6 +100,9 @@ namespace AsepriteImporter.Importers {
                 rows = Mathf.CeilToInt(sqrt / size.y);
             }
 
+            if (cols * (rows - 1) >= sprites.Length)
+                rows--;
+
             var width = cols * (size.x + Settings.padding * 2);
             var height = rows * (size.y + Settings.padding * 2);
             var atlas = Texture2DUtil.CreateTransparentTexture(width, height);
